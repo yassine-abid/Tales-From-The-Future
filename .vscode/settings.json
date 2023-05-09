@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "character.h": "c",
+        "sdl.h": "c",
+        "sdl_mixer.h": "c",
+        "typeinfo": "c",
+        "menufunctions.h": "c",
+        "minimap.h": "c",
+        "sdl_image.h": "c",
+        "string.h": "c"
+    }
+}

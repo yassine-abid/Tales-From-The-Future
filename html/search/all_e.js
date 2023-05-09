@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['update_5fentity_5fanimation_87',['update_entity_animation',['../entity_8c.html#ab4c258d1069e7eebefb3e77f1ef7f343',1,'update_entity_animation(Entity *e, Uint32 current_time, int entity_moving):&#160;entity.c'],['../entity_8h.html#ab4c258d1069e7eebefb3e77f1ef7f343',1,'update_entity_animation(Entity *e, Uint32 current_time, int entity_moving):&#160;entity.c']]],
+  ['update_5fplayer_5fanimation_88',['update_player_animation',['../character_8c.html#a70029b44660b7caa5bf48c0e21d7a0a0',1,'update_player_animation(Player *player, Uint32 current_time, int player_moving):&#160;character.c'],['../character_8h.html#a70029b44660b7caa5bf48c0e21d7a0a0',1,'update_player_animation(Player *player, Uint32 current_time, int player_moving):&#160;character.c']]],
+  ['updateplayerposition_89',['updatePlayerPosition',['../character_8c.html#a9d9a2f4ce21c47a7d0bd483fe4bd33e8',1,'updatePlayerPosition(SDL_Rect *playerRect, int *direction, int velocity, int *initialy, int *njump, SDL_Rect actualplayer, SDL_Surface *mask):&#160;character.c'],['../character_8h.html#a9d9a2f4ce21c47a7d0bd483fe4bd33e8',1,'updatePlayerPosition(SDL_Rect *playerRect, int *direction, int velocity, int *initialy, int *njump, SDL_Rect actualplayer, SDL_Surface *mask):&#160;character.c']]]
+];

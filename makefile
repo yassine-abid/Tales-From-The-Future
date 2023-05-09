@@ -1,0 +1,2 @@
+prog: main.c character.c mainmenu.c menufunctions.c entity.c pong.c
+	gcc main.c pong.c  character.c mainmenu.c menufunctions.c entity.c sauv.c minimap.c bg.c enigmeFichier.c mainEnigme.c enigmeAlea.c enigmeAleaMain.c pause.c arduinoCode.c -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lm

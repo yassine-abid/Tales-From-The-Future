@@ -1,0 +1,6 @@
+What is the Turing Test for AI? Conversation. Training. Data. 1
+How do neural networks learn information? Network. Training. Updates. 2
+What automaker produces the electric car "Model S"? Ford. General Motors. Tesla. 3
+Which electric car has the highest range? Tesla Model S. Chevrolet Bolt EV. Hyundai Kona Electric. 2
+What is a carbon nanotube made of? Carbon and boron. Carbon and nitrogen. Carbon and carbon. 3
+What is the largest application of nanotechnology? Medicine. Energy. Electronics. 1
