@@ -1,3 +1,3 @@
 # TALES FROM THE FUTURE
-a 2d game made with sdl 1.2
+a 2d game project for class made with sdl 1.2
  
