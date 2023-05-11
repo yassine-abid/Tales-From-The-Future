@@ -313,8 +313,9 @@ int main(int argc, char *argv[])
                     }
                     if (player.rect.x > 980 - 50)
                         player.rect.x = 980 - 50;
-                    if (player.rect.x < 50)
+                    if (player.rect.x < 50) {
                         player.rect.x = 50;
+                    }
                     updatePlayerPosition(&player.rect, &player.direction, player.velocity, &initialy, &njump, actualPlayer, mask[level].images[0]);
                     if (!collisionPP(actualPlayer, mask[level].images[0], levelMaskColors[level]) && (player.direction == 0 || player.direction == 1 || player.direction == 2 || player.direction == 3 || player.direction == 4))
                     {
@@ -335,7 +336,6 @@ int main(int argc, char *argv[])
                         playerCollionCheck.y -= 20;
                         if (collisionPP(playerCollionCheck, mask[level].images[0], levelMaskColors[level]))
                         {
-
                             player.rect.x -= (player.velocity + 5);
                             scrolling(&b[level], LEFT, player.velocity + 5);
                         }
@@ -347,7 +347,6 @@ int main(int argc, char *argv[])
                         playerCollionCheck.y -= 20;
                         if (collisionPP(playerCollionCheck, mask[level].images[0], levelMaskColors[level]))
                         {
-
                             player.rect.x += (player.velocity + 5);
                             scrolling(&b[level], RIGHT, player.velocity + 5);
                         }
@@ -358,7 +357,6 @@ int main(int argc, char *argv[])
                         playerCollionCheck.y -= 20;
                         if (collisionPP(playerCollionCheck, mask[level].images[0], levelMaskColors[level]))
                         {
-
                             player.rect.x -= (player.velocity + 5);
                             scrolling(&b[level], LEFT, player.velocity + 5);
                         }
@@ -368,7 +366,6 @@ int main(int argc, char *argv[])
                         playerCollionCheck.y -= 20;
                         if (collisionPP(playerCollionCheck, mask[level].images[0], levelMaskColors[level]))
                         {
-
                             player.rect.x += player.velocity + 5;
                             scrolling(&b[level], RIGHT, player.velocity + 5);
                         }

@@ -792,6 +792,10 @@ int playerTwoMovement(SDL_Event* event, Player* player, int* njump, int* nplayer
 */
 void updatePlayerPosition(SDL_Rect *playerRect, int *direction, int velocity, int *initialy, int *njump,SDL_Rect actualplayer,SDL_Surface* mask)
 {
+    if (playerRect->x < 50)
+    {
+        playerRect->y = 50;
+    }
     switch (*direction)
     {
         case 0:
