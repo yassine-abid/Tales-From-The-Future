@@ -50,6 +50,7 @@ int mainmenu(SDL_Surface* Screen, int menu, int isPaused);
 void init_players(Player* player, Player* playerTwo);
 void update_player_animation(Player *player, Uint32 current_time, int player_moving);
 void init_player(Player* player, int x, int y, int velocity, int maximumvelocity, int health, int max_health, const char* sprite_paths[]);
+void init_lidle(Player *player, const char *path[]);
 void print_player(Player *player, SDL_Surface *screen_surface, int player_moving);
 void init_right(Player *player, const char *idle_sprite_paths[]);
 void init_left(Player *player, const char *path[]);
