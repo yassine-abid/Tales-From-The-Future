@@ -89,24 +89,31 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     initialiser_levelOne(&IMAGElevelOne);                    // initializes first level
     // initialiser_audio(music); (this function includes the playing of the sound, therefore it will be in the loop until we seperate them in two different functions)
     image gameSplash[100];
+    image teamSplash[245];
     char link[100];
-    for (int i = 0; i < 100; i++)
-    {
-        sprintf(link, "intro/%04d.png", i + 1);
-        initialiser_imageBACK(&gameSplash[i], link);
-    }
     initialiser_texte(&txte); // initializes the title
     if (menu == 0)
     {
-        afficher_imageBMP(screen, IMAGESPLASH); // initializes the team's splash art
+        //afficher_imageBMP(screen, IMAGESPLASH); // initializes the team's splash art
+        Uint32 splashtime=0;
         for (int i = 0; i < 100; i++)
         {
+            sprintf(link, "intro/%04d.png", i + 1);
+            initialiser_imageBACK(&gameSplash[i], link);
             afficher_imageBMP(screen, gameSplash[i]);
-            SDL_Delay(50);
             SDL_Flip(screen);
+            liberer_image(gameSplash[i]);
+        }
+        for (int i = 0; i < 245; i++)
+        {
+            sprintf(link, "tintro/intro%04d.png", i + 1);
+            initialiser_imageBACK(&teamSplash[i], link);
+            afficher_imageBMP(screen, teamSplash[i]);
+            SDL_Flip(screen);
+            liberer_image(teamSplash[i]);
         }
     }
-    
+
     SDL_Flip(screen);
     SDL_Delay(1500);
     // main loop
@@ -473,8 +480,10 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     liberer_image(IMAGE_BTN3_alt);
     liberer_image(IMAGE_BTN4_alt);
     liberer_image(IMGCREDITS);
+
+    
     // liberer_musique(music); //Free music causes a seg error, unknown why
-    liberer_musiquebref(mus);
+    //liberer_musiquebref(mus);
 
     liberer_texte(txte);
 
