@@ -88,11 +88,25 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     initialiser_imageBACK(&IMGCREDITS, "creditsSplash.png"); // initializes the credit screen
     initialiser_levelOne(&IMAGElevelOne);                    // initializes first level
     // initialiser_audio(music); (this function includes the playing of the sound, therefore it will be in the loop until we seperate them in two different functions)
+    image gameSplash[100];
+    char link[100];
+    for (int i = 0; i < 100; i++)
+    {
+        sprintf(link, "intro/%04d.png", i + 1);
+        initialiser_imageBACK(&gameSplash[i], link);
+    }
     initialiser_texte(&txte); // initializes the title
     if (menu == 0)
     {
         afficher_imageBMP(screen, IMAGESPLASH); // initializes the team's splash art
+        for (int i = 0; i < 100; i++)
+        {
+            afficher_imageBMP(screen, gameSplash[i]);
+            SDL_Delay(50);
+            SDL_Flip(screen);
+        }
     }
+    
     SDL_Flip(screen);
     SDL_Delay(1500);
     // main loop

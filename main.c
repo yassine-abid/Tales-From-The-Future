@@ -122,6 +122,8 @@ int main(int argc, char *argv[])
             TTF_Font *font = TTF_OpenFont("04B_08__.TTF", 28);
             int intialx = 50;
             SDL_Rect actualPlayer = player.rect;
+            actualPlayer.w -=110;
+            printf("actual player w = %d\n", actualPlayer.w);
             int obstacleCollision = 0;
             // b.images[0]= IMG_Load("imgs/level 1.png");
             Background levelPassed, damage;
@@ -428,7 +430,7 @@ int main(int argc, char *argv[])
                     draw_hearts(screen_surface, player.health);
                     Uint32 elapsedGameTime = SDL_GetTicks() - start_time;
                     affichertemps(elapsedGameTime/1000);
-                    actualPlayer.x = player.rect.x + b[level].camera_pos.x;
+                    actualPlayer.x = player.rect.x + b[level].camera_pos.x +55;
                     actualPlayer.y = player.rect.y - 25;
 
                     // Update the screen
