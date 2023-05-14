@@ -96,7 +96,7 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     {
         //afficher_imageBMP(screen, IMAGESPLASH); // initializes the team's splash art
         Uint32 splashtime=0;
-        for (int i = 0; i < 100; i++)
+        /*for (int i = 0; i < 100; i++)
         {
             sprintf(link, "intro/%04d.png", i + 1);
             initialiser_imageBACK(&gameSplash[i], link);
@@ -111,7 +111,7 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
             afficher_imageBMP(screen, teamSplash[i]);
             SDL_Flip(screen);
             liberer_image(teamSplash[i]);
-        }
+        }*/
     }
 
     SDL_Flip(screen);

@@ -10,14 +10,9 @@
 #include <SDL/SDL_ttf.h>
 #include <string.h>
 #include "minimap.h"
+#include "character.h"
+#include "bg.h"
 
-/**
- * @struct Entity
- * @brief A struct that represents a game entity.
- *
- * This struct contains information about the entity's position, velocity, health,
- * movement direction, score, and animation.
- */
 
 /**
  * @struct Entity
@@ -72,7 +67,5 @@ void print_trap(trap t,SDL_Surface *screen,SDL_Rect camera);
 void init_coin(char spritepath[],int x,int y,int w,int h,int frameNumber,coin *c);
 void animate_coin(coin *c, Uint32 current_time);
 void print_coin(coin c,SDL_Surface *screen,SDL_Rect camera);
-
-
-
+void handlePlayerEnemyCollision(SDL_Rect actualPlayer, Entity e, int* last_damage, Player* player, Background damage, SDL_Surface* screen_surface, trap t1);
 #endif

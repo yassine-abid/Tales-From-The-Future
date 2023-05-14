@@ -337,3 +337,86 @@ void print_coin(coin c, SDL_Surface* screen, SDL_Rect camera) {
     SDL_Rect dest_rect = {c.pos.x - camera.x, c.pos.y - camera.y, 20, 20}; // position and size of the coin on the screen
     SDL_BlitSurface(c.sprite, &src_rect, screen, &dest_rect);
 }
+
+void handlePlayerEnemyCollision(SDL_Rect actualPlayer, Entity e, int* last_damage, Player* player, Background damage, SDL_Surface* screen_surface, trap t1) {
+    if (((collisionBB(e.rect, actualPlayer) || collisionBB(t1.pos, actualPlayer)) && SDL_GetTicks() - *last_damage > 1000) && e.health > 0)
+    {
+        *last_damage = SDL_GetTicks();
+        player->health -= 1;
+        /* if (b[level].camera_pos.x > 400)
+         b[level].camera_pos.x -=400;
+         else b[level].camera_pos.x = 0; */
+        afficherBack(damage, screen_surface);
+        SDL_Flip(screen_surface);
+        SDL_Delay(100);
+    }
+}
+
+//I have no idea what this does but it seems to be working xd
+//Nvm not working, not used for now
+SDL_Rect playerCollision(Player* player, SDL_Rect actualPlayer, Background* b, Background* mask, SDL_Color* levelMaskColors, int level) {
+    SDL_Rect playerCollionCheck;
+    switch (player->direction) {
+        case 1:
+            playerCollionCheck = actualPlayer;
+            playerCollionCheck.x = actualPlayer.x;
+            playerCollionCheck.y -= 20;
+            if (collisionPP(playerCollionCheck, mask[level].images[0], levelMaskColors[level])) {
+                player->rect.x -= (player->velocity + 5);
+                scrolling(b, LEFT, player->velocity + 5);
+            }
+            break;
+
+        case 2:
+            playerCollionCheck = actualPlayer;
+            playerCollionCheck.x = actualPlayer.x;
+            playerCollionCheck.y -= 20;
+            if (collisionPP(playerCollionCheck, mask[level].images[0], levelMaskColors[level])) {
+                player->rect.x += (player->velocity + 5);
+                scrolling(b, RIGHT, player->velocity + 5);
+            }
+            break;
+
+        case 3:
+            playerCollionCheck = actualPlayer;
+            playerCollionCheck.x = actualPlayer.x;
+            playerCollionCheck.y -= 20;
+            if (collisionPP(playerCollionCheck, mask[level].images[0], levelMaskColors[level])) {
+                player->rect.x -= (player->velocity + 5);
+                scrolling(b, LEFT, player->velocity + 5);
+            }
+            break;
+
+        case 4:
+            playerCollionCheck.x = actualPlayer.x;
+            playerCollionCheck.y -= 20;
+            if (collisionPP(playerCollionCheck, mask[level].images[0], levelMaskColors[level])) {
+                player->rect.x += player->velocity + 5;
+                scrolling(b, RIGHT, player->velocity + 5);
+            }
+            break;
+
+        default:
+            break;
+    }
+    return playerCollionCheck;
+}
+
+
+//unused (for now, needs fixing)
+int handlePPCollison(Player* player, int level, Background* mask, SDL_Color* levelMaskColors, int initialy, int *collision)
+{
+    printf("level %d\n", level);
+    if (!collisionPP(player->rect, mask[level].images[0], levelMaskColors[level]) && (player->direction == 0 || player->direction == 1 || player->direction == 2 || player->direction == 3 || player->direction == 4))
+    {
+        initialy += 1;
+        *collision = 0;
+    }
+    if (collisionPP(player->rect, mask[level].images[0], levelMaskColors[level]))
+    {
+        *collision = 1;
+        initialy = player->rect.y;
+    }
+
+    return initialy;
+}

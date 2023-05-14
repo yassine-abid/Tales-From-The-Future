@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
             TTF_Font *font = TTF_OpenFont("04B_08__.TTF", 28);
             int intialx = 50;
             SDL_Rect actualPlayer = player.rect;
-            actualPlayer.w -=110;
+            actualPlayer.w -= 110;
             printf("actual player w = %d\n", actualPlayer.w);
             int obstacleCollision = 0;
             // b.images[0]= IMG_Load("imgs/level 1.png");
@@ -130,8 +130,8 @@ int main(int argc, char *argv[])
             /*Dialogue will be transferred into a seperate function eventually*/
             int dialogueCheck = 0;
             Background dialogue[10];
-            //const char *dialogueOne[] = {"dialogue/dialogueOne.png"};
-            //initBack(&dialogue[0], screen_surface, dialogueOne, 1);
+            // const char *dialogueOne[] = {"dialogue/dialogueOne.png"};
+            // initBack(&dialogue[0], screen_surface, dialogueOne, 1);
             /*End of dialogue*/
             const char *levelPassedPic[] = {"imgs/levelpassed.png"};
             initBack(&levelPassed, screen_surface, levelPassedPic, 1);
@@ -153,31 +153,7 @@ int main(int argc, char *argv[])
             Uint32 animation_time = 0, start_time = SDL_GetTicks();
             int elapsed = 0;
             int levlsframeNumber[] = {9, 1};
-            while (choosing)
-            {
-                afficherBack(choice, screen_surface);
-                SDL_Flip(screen_surface);
-                SDL_WaitEvent(&event);
-                switch (event.type)
-                {
-                case SDL_QUIT:
-                    choosing = 0;
-                    break;
-                case SDL_KEYDOWN:
-                    switch (event.key.keysym.sym)
-                    {
-                    case SDLK_k:
-                        ctrlChoice = 1;
-                        choosing = 0;
-                        break;
-                    case SDLK_j:
-                        ctrlChoice = 2;
-                        choosing = 0;
-                        break;
-                    }
-                    break;
-                }
-            }
+            cntrlChoice(&ctrlChoice, screen_surface, choice);
             while (game >= 1)
             {
                 elapsed = SDL_GetTicks() - animation_time;
@@ -234,27 +210,9 @@ int main(int argc, char *argv[])
                 // afficher_minimap(m,screen_surface);
 
                 MAJMinimap(player.rect, &m, b[level].camera_pos, 50);
-                if (((collisionBB(e.rect, actualPlayer) || collisionBB(t1.pos, actualPlayer)) && SDL_GetTicks() - last_damage > 1000) && e.health > 0)
-                {
-                    last_damage = SDL_GetTicks();
-                    player.health -= 1;
-                    /* if (b[level].camera_pos.x > 400)
-                     b[level].camera_pos.x -=400;
-                     else b[level].camera_pos.x = 0; */
-                    afficherBack(damage, screen_surface);
-                    SDL_Flip(screen_surface);
-                    SDL_Delay(100);
-                }
-                checkIfPlayerIsDead(&player, &gameover, &level, &updatedLevelZero, &updatedLevelOne, &updatedLevelTwo);
-                if (gameover)
-                {
-                    game = 0;
-                    afficherBack(gameoverimg, screen_surface);
-                    SDL_Flip(screen_surface);
-                    SDL_Delay(5000);
-                    gameover = 0;
-                    // game = mainmenu(screen_surface, 0, isPaused);
-                }
+                handlePlayerEnemyCollision(actualPlayer, e, &last_damage, &player, damage, screen_surface, t1);         // handles collision
+                checkIfPlayerIsDead(&player, &gameover, &level, &updatedLevelZero, &updatedLevelOne, &updatedLevelTwo); // checks for death
+                isGameOver(&gameover, &game, gameoverimg, screen_surface);
 
                 switch (nplayer)
                 {
@@ -279,7 +237,7 @@ int main(int argc, char *argv[])
                                     showmp = 1;
                                 break;
                             case SDLK_g:
-                                int a =pong(screen_surface);
+                                int a = pong(screen_surface);
                                 break;
                             case SDLK_ESCAPE:
                                 // affiherBack(pause[0], screen_surface);
@@ -295,30 +253,17 @@ int main(int argc, char *argv[])
                                   mouseX, mouseY, &buttonOneHovered, &buttonTwoHovered, &buttonThreeHovered, &buttonFourHovered, pause[0], &level);
                         playermoving = playerOneMovement(&event, &player, &njump, &nplayer);
                     }
-                    switch (playermoving)
-                    {
-                    case 0:
-                        if (player.rect.x > 100)
-                        {
-                            player.rect.x -= 2;
-                            scrolling(&b[level], RIGHT, 2);
-                        }
-                        break;
-                    case 1:
-                        scrolling(&b[level], RIGHT, player.velocity);
-                        break;
-                    case 2:
-                        scrolling(&b[level], LEFT, player.velocity);
 
-                    default:
-                        break;
-                    }
+                    handleScrolling(playermoving, level, &player, b); // Handles scrolling
+
                     if (player.rect.x > 980 - 50)
                         player.rect.x = 980 - 50;
-                    if (player.rect.x < 50) {
+                    if (player.rect.x < 50)
+                    {
                         player.rect.x = 50;
                     }
                     updatePlayerPosition(&player.rect, &player.direction, player.velocity, &initialy, &njump, actualPlayer, mask[level].images[0]);
+                    /*Needs to transfer into a function*/
                     if (!collisionPP(actualPlayer, mask[level].images[0], levelMaskColors[level]) && (player.direction == 0 || player.direction == 1 || player.direction == 2 || player.direction == 3 || player.direction == 4))
                     {
                         initialy += 1;
@@ -329,7 +274,7 @@ int main(int argc, char *argv[])
                         collision = 1;
                         initialy = player.rect.y;
                     }
-
+                    /**/
                     switch (player.direction)
                     {
                     case 1:
@@ -380,33 +325,36 @@ int main(int argc, char *argv[])
                     update_entity_animation(&e, SDL_GetTicks(), e.direction);
                     update_player_animation(&player, SDL_GetTicks(), player.direction);
                     // update_player_animation(&player, SDL_GetTicks());
-                    for (i = 0; i < 20; i++)
+                    if (level == 0)
                     {
-                        if (collisionBB(c[i].pos, actualPlayer) && c[i].collected == 0)
+                        for (i = 0; i < 20; i++)
                         {
-                            c[i].collected = 1;
-                            player.score += 10;
-                        }
-                        if (c[i].collected == 0)
-                        {
-                            animate_coin(&c[i], SDL_GetTicks());
-                            print_coin(c[i], screen_surface, b[level].camera_pos);
-                        }
-                    }
-                    for (i = 0; i < 7; i++)
-                    {
-                        if (level == 0)
-                        {
-                            if (collisionBB(level1traps[i], actualPlayer) && SDL_GetTicks() - last_damage > 1000)
+                            if (collisionBB(c[i].pos, actualPlayer) && c[i].collected == 0)
                             {
-                                last_damage = SDL_GetTicks();
-                                player.health -= 1;
-                                /* if (b[level].camera_pos.x > 400)
-                                b[level].camera_pos.x -=400;
-                         else b[level].camera_pos.x = 0; */
-                                afficherBack(damage, screen_surface);
-                                SDL_Flip(screen_surface);
-                                SDL_Delay(100);
+                                c[i].collected = 1;
+                                player.score += 10;
+                            }
+                            if (c[i].collected == 0)
+                            {
+                                animate_coin(&c[i], SDL_GetTicks());
+                                print_coin(c[i], screen_surface, b[level].camera_pos);
+                            }
+                        }
+                        for (i = 0; i < 7; i++)
+                        {
+                            if (level == 0)
+                            {
+                                if (collisionBB(level1traps[i], actualPlayer) && SDL_GetTicks() - last_damage > 1000)
+                                {
+                                    last_damage = SDL_GetTicks();
+                                    player.health -= 1;
+                                    /* if (b[level].camera_pos.x > 400)
+                                    b[level].camera_pos.x -=400;
+                             else b[level].camera_pos.x = 0; */
+                                    afficherBack(damage, screen_surface);
+                                    SDL_Flip(screen_surface);
+                                    SDL_Delay(100);
+                                }
                             }
                         }
                     }
@@ -429,8 +377,8 @@ int main(int argc, char *argv[])
 
                     draw_hearts(screen_surface, player.health);
                     Uint32 elapsedGameTime = SDL_GetTicks() - start_time;
-                    affichertemps(elapsedGameTime/1000);
-                    actualPlayer.x = player.rect.x + b[level].camera_pos.x +55;
+                    affichertemps(elapsedGameTime / 1000);
+                    actualPlayer.x = player.rect.x + b[level].camera_pos.x + 55;
                     actualPlayer.y = player.rect.y - 25;
 
                     // Update the screen
@@ -444,7 +392,7 @@ int main(int argc, char *argv[])
                     }
                     last_update_time = current_time;
                     break;
-                case 1:
+                case 1: // Two players, bit of a mess for now
                     while (SDL_PollEvent(&event))
                     {
                         playerOneMovement(&event, &player, &njump, &nplayer);

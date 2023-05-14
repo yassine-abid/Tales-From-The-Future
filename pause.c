@@ -221,3 +221,15 @@ void pauseGame(Player p, Background b, SDL_Surface *screen_surface, int *isPause
         }
     }
 }
+
+void isGameOver(int* gameover, int* game, Background gameoverimg, SDL_Surface* screen_surface) {
+    if (*gameover)
+    {
+        *game = 0;
+        afficherBack(gameoverimg, screen_surface);
+        SDL_Flip(screen_surface);
+        SDL_Delay(5000);
+        *gameover = 0;
+        // *game = mainmenu(screen_surface, 0, isPaused);
+    }
+}

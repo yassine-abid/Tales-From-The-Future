@@ -44,7 +44,7 @@ void init_players(Player *player, Player *playerTwo)
                                 "sprites/jr9.png"};
     const char *attackleft[4] = {"sprites/al1.png", "sprites/al2.png", "sprites/al3.png", "sprites/al4.png"};
     const char *attackright[4] = {"sprites/ar1.png", "sprites/ar2.png", "sprites/ar3.png", "sprites/ar4.png"};
-    init_player(player, 100, 350, 1, 10, 3, 3, idle);
+    init_player(player, 100, 350, 1, 10, 50, 50, idle);
     init_lidle(player, idleleft);
     init_right(player, right);
     init_left(player, left);

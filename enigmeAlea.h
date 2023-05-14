@@ -10,6 +10,7 @@
 #include <SDL/SDL_ttf.h>
 #include <string.h>
 #include <time.h>
+#include "bg.h"
 #define SCREEN_H 770
 #define SCREEN_W 1366
 
@@ -67,5 +68,6 @@ void afficher_imageBTNEnig(SDL_Surface *screen, imageEnig imge);
 void initialiser_imageBOUTONEnig(imageEnig *imge, int x, int y, int h, int w, char *name);
 void initialiser_imageBACKEnig(imageEnig *imge, char *name);
 void afficher_imageBMPEnigme(SDL_Surface *screen, imageEnig imge);
+void cntrlChoice(int* ctrlChoice, SDL_Surface* screen_surface, Background choice);
 
 #endif
