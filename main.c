@@ -123,7 +123,6 @@ int main(int argc, char *argv[])
             int intialx = 50;
             SDL_Rect actualPlayer = player.rect;
             actualPlayer.w -= 110;
-            printf("actual player w = %d\n", actualPlayer.w);
             int obstacleCollision = 0;
             // b.images[0]= IMG_Load("imgs/level 1.png");
             Background levelPassed, damage;
@@ -359,7 +358,7 @@ int main(int argc, char *argv[])
                         }
                     }
                     if (showmp == 0)
-                        afficher_minimap(m, screen_surface);
+                    afficher_minimap(m, screen_surface);
                     sprintf(score, "Score : %d", player.score);
                     textSurface = TTF_RenderText_Solid(font, score, textColor);
                     SDL_BlitSurface(textSurface, NULL, screen_surface, &textLocation);

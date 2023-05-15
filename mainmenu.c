@@ -14,6 +14,8 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     int volume = MIX_MAX_VOLUME - 76;
     image IMAGE_BTN1, IMAGE_BTN2, IMAGE_BTN1_alt, IMAGE_BTN2_alt;
     image IMAGE_BTN3, IMAGE_BTN4, IMAGE_BTN3_alt, IMAGE_BTN4_alt;
+    image IMAGE_BTN5, IMAGE_BTN5_alt;
+    image LOGO;
     image IMGCREDITS;
     image labelVol, labelScreen;
     image IMAGE[8];
@@ -34,12 +36,13 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     int mouseX = 0;
     int mouseY = 0;
     int boucle = 1;
-    int sfxPlayedOne = 0, sfxPlayedTwo = 0, sfxPlayedThree = 0, sfxPlayedFour = 0;
+    int sfxPlayedOne = 0, sfxPlayedTwo = 0, sfxPlayedThree = 0, sfxPlayedFour = 0, sfxPlayedFive = 0;
     int buttonOneHovered = 0; // 0 = normal, 1 = hovered (for button one)
                               // Initialization, if it fails program exits
     int buttonTwoHovered = 0; // same as button One but for button two
     int buttonThreeHovered = 0;
     int buttonFourHovered = 0;
+    int buttonFiveHovered = 0;
     int volPlusHovered = 0;
     int volMinusHovered = 0;
     int fsnHovered = 0;
@@ -47,16 +50,19 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
 
     // initialization function calls
     char buttonOne[25], buttonOneAlt[25], buttonTwo[25], buttonTwoAlt[25], buttonThree[25], buttonThreeAlt[25], buttonFour[25], buttonFourAlt[25];
-
+    SDL_Rect buttonsHitbox[5] = {{100, 370, 250, 30}, {100, 430, 250, 30}, {100, 490, 250, 30}, {100, 550, 250, 30}, {100, 610, 250, 30}};
     // Calling for the following function should include the image variable, x,y,h,w, and the image name
-    initialiser_imageBOUTON(&IMAGE_BTN1, (SCREEN_W / 2) - 224, 200, 224, 508, "startgame.png");
-    initialiser_imageBOUTON(&IMAGE_BTN2, (SCREEN_W / 2) - 224, 300, 224, 508, "settings.png");
-    initialiser_imageBOUTON(&IMAGE_BTN3, (SCREEN_W / 2) - 224, 400, 224, 508, "credits.png");
-    initialiser_imageBOUTON(&IMAGE_BTN4, (SCREEN_W / 2) - 224, 500, 224, 508, "exit.png");
-    initialiser_imageBOUTON(&IMAGE_BTN1_alt, (SCREEN_W / 2) - 224, 200, 224, 508, "startgameAlt.png");
-    initialiser_imageBOUTON(&IMAGE_BTN2_alt, (SCREEN_W / 2) - 224, 300, 224, 508, "settingsAlt.png");
-    initialiser_imageBOUTON(&IMAGE_BTN3_alt, (SCREEN_W / 2) - 224, 400, 224, 508, "creditsAlt.png");
-    initialiser_imageBOUTON(&IMAGE_BTN4_alt, (SCREEN_W / 2) - 224, 500, 224, 508, "exitAlt.png");
+    initialiser_imageBOUTON(&IMAGE_BTN1, 0, 0, 224, 508, "newgame.png");
+    initialiser_imageBOUTON(&IMAGE_BTN2, 0, 0, 224, 508, "LOADGAME.png");
+    initialiser_imageBOUTON(&IMAGE_BTN3, 0, 0, 224, 508, "options.png");
+    initialiser_imageBOUTON(&IMAGE_BTN4, 0, 0, 224, 508, "credits.png");
+    initialiser_imageBOUTON(&IMAGE_BTN5, 0, 0, 224, 508, "Exit.png");
+    initialiser_imageBOUTON(&LOGO, 0, 0, 224, 508, "logo.png");
+    initialiser_imageBOUTON(&IMAGE_BTN1_alt, 0, 0, 224, 508, "newgameAlt.png");
+    initialiser_imageBOUTON(&IMAGE_BTN2_alt, 0, 0, 224, 508, "loadGameAlt.png");
+    initialiser_imageBOUTON(&IMAGE_BTN3_alt, 0, 0, 224, 508, "optionsAlt.png");
+    initialiser_imageBOUTON(&IMAGE_BTN4_alt, 0, 0, 224, 508, "creditsAlt.png");
+    initialiser_imageBOUTON(&IMAGE_BTN5_alt, 0, 0, 224, 508, "ExitAlt.png");
     initialiser_imageBOUTON(&IMAGERETURN, 0, 0, 112, 200, "return.png");
     initialiser_imageBOUTON(&sndButton[0], SCREEN_H - 470, SCREEN_W - 966, 77, 384, "frame_0_delay-0.2s.png");
     initialiser_imageBOUTON(&sndButton[1], SCREEN_H - 470, SCREEN_W - 966, 77, 384, "frame_1_delay-0.2s.png");
@@ -94,8 +100,8 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     initialiser_texte(&txte); // initializes the title
     if (menu == 0)
     {
-        //afficher_imageBMP(screen, IMAGESPLASH); // initializes the team's splash art
-        Uint32 splashtime=0;
+        // afficher_imageBMP(screen, IMAGESPLASH); // initializes the team's splash art
+        Uint32 splashtime = 0;
         /*for (int i = 0; i < 100; i++)
         {
             sprintf(link, "intro/%04d.png", i + 1);
@@ -129,7 +135,8 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
                 initialiser_audio(music);
             }
             printBG(screen, IMAGE, &frame); // Does the animation for the background
-            afficher_texte(screen, txte);   // Prints the game's title
+            //afficher_texte(screen, txte);   // Prints the game's title
+            afficher_imageBTN(screen, LOGO); // Prints the play button
             // The following if, else section handles the hovering mechanic of the buttons
             if (buttonOneHovered == 0)
             {
@@ -163,6 +170,14 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
             {
                 afficher_imageBTN(screen, IMAGE_BTN4_alt);
             }
+            if (buttonFiveHovered == 0)
+            {
+                afficher_imageBTN(screen, IMAGE_BTN5);
+            }
+            else
+            {
+                afficher_imageBTN(screen, IMAGE_BTN5_alt);
+            }
 
             // second loop, reads events
             while (SDL_PollEvent(&event))
@@ -175,41 +190,48 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
                     break;
                 case SDL_MOUSEBUTTONDOWN: // mouse click
                     if (event.button.button == SDL_BUTTON_LEFT &&
-                        event.motion.y <= IMAGE_BTN4.pos_img_ecran.y + 150 &&
-                        event.motion.y >= IMAGE_BTN4.pos_img_ecran.y + 60 &&
-                        event.motion.x <= IMAGE_BTN4.pos_img_ecran.x + 400 && event.motion.x >= IMAGE_BTN4.pos_img_ecran.x)
+                        event.motion.y <= buttonsHitbox[4].y + buttonsHitbox[4].h &&
+                        event.motion.y >= buttonsHitbox[4].y &&
+                        event.motion.x <= buttonsHitbox[4].x + buttonsHitbox[4].w && event.motion.x >= buttonsHitbox[4].x)
                     {
                         boucle = 0;
                     }
                     if (event.button.button == SDL_BUTTON_LEFT &&
-                        event.motion.y <= IMAGE_BTN1.pos_img_ecran.y + 150 &&
-                        event.motion.y >= IMAGE_BTN1.pos_img_ecran.y + 60 &&
-                        event.motion.x <= IMAGE_BTN1.pos_img_ecran.x + 400 && event.motion.x >= IMAGE_BTN1.pos_img_ecran.x)
+                        event.motion.y <= buttonsHitbox[0].y + buttonsHitbox[0].h &&
+                        event.motion.y >= buttonsHitbox[0].y &&
+                        event.motion.x <= buttonsHitbox[0].x + buttonsHitbox[0].w && event.motion.x >= buttonsHitbox[0].x)
                     {
                         menu = 1;
                     }
                     if (event.button.button == SDL_BUTTON_LEFT &&
-                        event.motion.y <= IMAGE_BTN2.pos_img_ecran.y + 150 &&
-                        event.motion.y >= IMAGE_BTN2.pos_img_ecran.y + 60 &&
-                        event.motion.x <= IMAGE_BTN2.pos_img_ecran.x + 400 && event.motion.x >= IMAGE_BTN2.pos_img_ecran.x)
+                        event.motion.y <= buttonsHitbox[2].y + buttonsHitbox[2].h &&
+                        event.motion.y >= buttonsHitbox[2].y &&
+                        event.motion.x <= buttonsHitbox[2].x + buttonsHitbox[2].w && event.motion.x >= buttonsHitbox[2].x)
                     {
                         menu = 2;
                     }
                     if (event.button.button == SDL_BUTTON_LEFT &&
-                        event.motion.y <= IMAGE_BTN3.pos_img_ecran.y + 150 &&
-                        event.motion.y >= IMAGE_BTN3.pos_img_ecran.y + 60 &&
-                        event.motion.x <= IMAGE_BTN3.pos_img_ecran.x + 400 && event.motion.x >= IMAGE_BTN3.pos_img_ecran.x)
+                        event.motion.y <= buttonsHitbox[3].y + buttonsHitbox[3].h &&
+                        event.motion.y >= buttonsHitbox[3].y &&
+                        event.motion.x <= buttonsHitbox[3].x + buttonsHitbox[3].w && event.motion.x >= buttonsHitbox[3].x)
                     {
                         menu = 3;
+                    }
+                    if(event.button.button == SDL_BUTTON_LEFT &&
+                        event.motion.y <= buttonsHitbox[1].y + buttonsHitbox[1].h &&
+                        event.motion.y >= buttonsHitbox[1].y &&
+                        event.motion.x <= buttonsHitbox[1].x + buttonsHitbox[1].w && event.motion.x >= buttonsHitbox[1].x)
+                    {
+                        menu = 4;
                     }
                     // Mouse button clicks on specific regions, proceeds elsewhere
                     break;
                 case SDL_MOUSEMOTION: // mouse moving
                     mouseX = event.motion.x;
                     mouseY = event.motion.y;
-                    if (event.motion.y <= IMAGE_BTN1.pos_img_ecran.y + 150 &&
-                        event.motion.y >= IMAGE_BTN1.pos_img_ecran.y + 60 &&
-                        event.motion.x <= IMAGE_BTN1.pos_img_ecran.x + 400 && event.motion.x >= IMAGE_BTN1.pos_img_ecran.x)
+                    if (event.motion.y <= buttonsHitbox[0].y + buttonsHitbox[0].h &&
+                        event.motion.y >= buttonsHitbox[0].y &&
+                        event.motion.x <= buttonsHitbox[0].x + buttonsHitbox[0].w && event.motion.x >= buttonsHitbox[0].x)
                     {
                         buttonOneHovered = 1;
                         if (sfxPlayedOne == 0)
@@ -223,9 +245,9 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
                         sfxPlayedOne = 0;
                         buttonOneHovered = 0;
                     }
-                    if (event.motion.y <= IMAGE_BTN2.pos_img_ecran.y + 150 &&
-                        event.motion.y >= IMAGE_BTN2.pos_img_ecran.y + 60 &&
-                        event.motion.x <= IMAGE_BTN2.pos_img_ecran.x + 400 && event.motion.x >= IMAGE_BTN2.pos_img_ecran.x)
+                    if (event.motion.y <= buttonsHitbox[1].y + buttonsHitbox[1].h &&
+                        event.motion.y >= buttonsHitbox[1].y &&
+                        event.motion.x <= buttonsHitbox[1].x + buttonsHitbox[1].w && event.motion.x >= buttonsHitbox[1].x)
                     {
                         buttonTwoHovered = 1;
                         if (sfxPlayedTwo == 0)
@@ -239,9 +261,9 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
                         sfxPlayedTwo = 0;
                         buttonTwoHovered = 0;
                     }
-                    if (event.motion.y <= IMAGE_BTN3.pos_img_ecran.y + 150 &&
-                        event.motion.y >= IMAGE_BTN3.pos_img_ecran.y + 60 &&
-                        event.motion.x <= IMAGE_BTN3.pos_img_ecran.x + 400 && event.motion.x >= IMAGE_BTN3.pos_img_ecran.x)
+                    if (event.motion.y <= buttonsHitbox[2].y + buttonsHitbox[2].h &&
+                        event.motion.y >= buttonsHitbox[2].y &&
+                        event.motion.x <= buttonsHitbox[2].x + buttonsHitbox[2].w && event.motion.x >= buttonsHitbox[2].x)
                     {
                         buttonThreeHovered = 1;
                         if (sfxPlayedThree == 0)
@@ -255,9 +277,9 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
                         sfxPlayedThree = 0;
                         buttonThreeHovered = 0;
                     }
-                    if (event.motion.y <= IMAGE_BTN4.pos_img_ecran.y + 150 &&
-                        event.motion.y >= IMAGE_BTN4.pos_img_ecran.y + 60 &&
-                        event.motion.x <= IMAGE_BTN4.pos_img_ecran.x + 400 && event.motion.x >= IMAGE_BTN4.pos_img_ecran.x)
+                    if (event.motion.y <= buttonsHitbox[3].y + buttonsHitbox[3].h &&
+                        event.motion.y >= buttonsHitbox[3].y &&
+                        event.motion.x <= buttonsHitbox[3].x + buttonsHitbox[3].w && event.motion.x >= buttonsHitbox[3].x)
                     {
                         buttonFourHovered = 1;
                         if (sfxPlayedFour == 0)
@@ -271,6 +293,22 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
                         sfxPlayedFour = 0;
                         buttonFourHovered = 0;
                     }
+                    if(event.motion.y <= buttonsHitbox[4].y + buttonsHitbox[4].h &&
+                        event.motion.y >= buttonsHitbox[4].y &&
+                        event.motion.x <= buttonsHitbox[4].x + buttonsHitbox[4].w && event.motion.x >= buttonsHitbox[4].x)
+                    {
+                        buttonFiveHovered = 1;
+                        if (sfxPlayedFive == 0)
+                        {
+                            channel = initialiser_audiobref(mus, "Hover.wav");
+                            sfxPlayedFive = 1;
+                        }
+                    }
+                    else
+                    {
+                        sfxPlayedFive = 0;
+                        buttonFiveHovered = 0;
+                    }
                     // mouse hovers over specific regions, plays sound
                     break;
                 }
@@ -279,30 +317,7 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
             break;
         case 1:               // Case 1 is the game's window
             Mix_CloseAudio(); // Turns off the menu's music, later on there will be the level's music added
-            afficher_imageBMP(screen, gameSelect);
-            SDL_Flip(screen);
-            while (SDL_PollEvent(&event))
-            {
-                switch (event.type)
-                {
-                case SDL_QUIT:
-                    boucle = 0;
-                    break;
-                case SDL_KEYDOWN:
-                    switch (event.key.keysym.sym)
-                    {
-                    case SDLK_n:
-
-                        return 1;
-                        break;
-                    case SDLK_l:
-                        printf("aerkaerkaoerk\n");
-                        return 2;
-                        break;
-                    }
-                    break;
-                }
-            }
+            return 1;         // Returns 1 to the main function, which will then start the game    
             break;
         case 2:                                     // Case 2 is the setting's window
             afficher_imageBMP(screen, IMAGE[0]);    // Setting's background
@@ -459,6 +474,10 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
             }
             SDL_Flip(screen);
             break;
+        case 4:
+            Mix_CloseAudio();
+            return 2;
+            break;
         }
     }
 
@@ -481,9 +500,8 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     liberer_image(IMAGE_BTN4_alt);
     liberer_image(IMGCREDITS);
 
-    
     // liberer_musique(music); //Free music causes a seg error, unknown why
-    //liberer_musiquebref(mus);
+    // liberer_musiquebref(mus);
 
     liberer_texte(txte);
 
