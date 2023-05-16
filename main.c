@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
     int prog = 1;
     while (prog)
     {
-        int serial_port;
-        // setup_arduino(&serial_port);
         int inputs[8];
+        Uint32 arduinotime = 0;
+        int serial_port;
         int collision = 0;
         int controlChoice = 1;
         Minimap m;
@@ -153,6 +153,11 @@ int main(int argc, char *argv[])
             int elapsed = 0;
             int levlsframeNumber[] = {9, 1};
             cntrlChoice(&ctrlChoice, screen_surface, choice);
+            // initializes arduino if ctrlchoice is 2
+            if (ctrlChoice == 2)
+            {
+                setup_arduino(&serial_port);
+            }
             while (game >= 1)
             {
                 elapsed = SDL_GetTicks() - animation_time;
@@ -216,41 +221,52 @@ int main(int argc, char *argv[])
                 switch (nplayer)
                 {
                 case 0:
-                    while (SDL_PollEvent(&event))
+                    if (ctrlChoice == 1)
                     {
-                        switch (event.type)
+                        while (SDL_PollEvent(&event))
                         {
-                        case SDL_KEYUP:
-                            switch (event.key.keysym.sym)
+                            switch (event.type)
                             {
-                            case SDLK_o:
-                                Enigme(screen_surface);
-                                break;
-                            case SDLK_p:
-                                aleaMain(screen_surface);
-                                break;
-                            case SDLK_i:
-                                if (showmp == 1)
-                                    showmp = 0;
-                                else
-                                    showmp = 1;
-                                break;
-                            case SDLK_g:
-                                int a = pong(screen_surface);
-                                break;
-                            case SDLK_ESCAPE:
-                                // affiherBack(pause[0], screen_surface);
+                            case SDL_KEYUP:
+                                switch (event.key.keysym.sym)
+                                {
+                                case SDLK_o:
+                                    Enigme(screen_surface);
+                                    break;
+                                case SDLK_p:
+                                    aleaMain(screen_surface);
+                                    break;
+                                case SDLK_i:
+                                    if (showmp == 1)
+                                        showmp = 0;
+                                    else
+                                        showmp = 1;
+                                    break;
+                                case SDLK_g:
+                                    int a = pong(screen_surface);
+                                    break;
+                                case SDLK_ESCAPE:
+                                    // affiherBack(pause[0], screen_surface);
 
-                                isPaused = 1;
-                                SDL_Flip(screen_surface);
+                                    isPaused = 1;
+                                    SDL_Flip(screen_surface);
+                                    break;
+                                }
                                 break;
                             }
-                            break;
-                        }
 
-                        pauseGame(player, b[level], screen_surface, &isPaused, &event, &game, IMGOptOne, IMGOptTwo, IMGOptThree, IMGOptFour, IMGOptOneAlt, IMGOptTwoAlt, IMGOptThreeAlt, IMGOptFourAlt,
-                                  mouseX, mouseY, &buttonOneHovered, &buttonTwoHovered, &buttonThreeHovered, &buttonFourHovered, pause[0], &level);
-                        playermoving = playerOneMovement(&event, &player, &njump, &nplayer);
+                            pauseGame(player, b[level], screen_surface, &isPaused, &event, &game, IMGOptOne, IMGOptTwo, IMGOptThree, IMGOptFour, IMGOptOneAlt, IMGOptTwoAlt, IMGOptThreeAlt, IMGOptFourAlt,
+                                      mouseX, mouseY, &buttonOneHovered, &buttonTwoHovered, &buttonThreeHovered, &buttonFourHovered, pause[0], &level);
+                            playermoving = playerOneMovement(&event, &player, &njump, &nplayer);
+                        }
+                    }
+                    else if (ctrlChoice == 2)
+                    {
+                        while (SDL_GetTicks() - arduinotime < 20)
+                            getInputs(inputs, serial_port);
+                        for (i = 0; i<8; i++) {
+                            printf("%d\n", inputs[i]);
+                        }
                     }
 
                     handleScrolling(playermoving, level, &player, b); // Handles scrolling
@@ -358,7 +374,7 @@ int main(int argc, char *argv[])
                         }
                     }
                     if (showmp == 0)
-                    afficher_minimap(m, screen_surface);
+                        afficher_minimap(m, screen_surface);
                     sprintf(score, "Score : %d", player.score);
                     textSurface = TTF_RenderText_Solid(font, score, textColor);
                     SDL_BlitSurface(textSurface, NULL, screen_surface, &textLocation);

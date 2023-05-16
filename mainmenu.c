@@ -54,15 +54,15 @@ int mainmenu(SDL_Surface *screen, int menu, int isPaused)
     // Calling for the following function should include the image variable, x,y,h,w, and the image name
     initialiser_imageBOUTON(&IMAGE_BTN1, 0, 0, 224, 508, "newgame.png");
     initialiser_imageBOUTON(&IMAGE_BTN2, 0, 0, 224, 508, "LOADGAME.png");
-    initialiser_imageBOUTON(&IMAGE_BTN3, 0, 0, 224, 508, "options.png");
+    initialiser_imageBOUTON(&IMAGE_BTN3, 0, 0, 224, 508, "OPTIONS.png");
     initialiser_imageBOUTON(&IMAGE_BTN4, 0, 0, 224, 508, "credits.png");
-    initialiser_imageBOUTON(&IMAGE_BTN5, 0, 0, 224, 508, "Exit.png");
+    initialiser_imageBOUTON(&IMAGE_BTN5, 0, 0, 224, 508, "exit.png");
     initialiser_imageBOUTON(&LOGO, 0, 0, 224, 508, "logo.png");
     initialiser_imageBOUTON(&IMAGE_BTN1_alt, 0, 0, 224, 508, "newgameAlt.png");
-    initialiser_imageBOUTON(&IMAGE_BTN2_alt, 0, 0, 224, 508, "loadGameAlt.png");
+    initialiser_imageBOUTON(&IMAGE_BTN2_alt, 0, 0, 224, 508, "LoadGameAlt.png");
     initialiser_imageBOUTON(&IMAGE_BTN3_alt, 0, 0, 224, 508, "optionsAlt.png");
     initialiser_imageBOUTON(&IMAGE_BTN4_alt, 0, 0, 224, 508, "creditsAlt.png");
-    initialiser_imageBOUTON(&IMAGE_BTN5_alt, 0, 0, 224, 508, "ExitAlt.png");
+    initialiser_imageBOUTON(&IMAGE_BTN5_alt, 0, 0, 224, 508, "exitAlt.png");
     initialiser_imageBOUTON(&IMAGERETURN, 0, 0, 112, 200, "return.png");
     initialiser_imageBOUTON(&sndButton[0], SCREEN_H - 470, SCREEN_W - 966, 77, 384, "frame_0_delay-0.2s.png");
     initialiser_imageBOUTON(&sndButton[1], SCREEN_H - 470, SCREEN_W - 966, 77, 384, "frame_1_delay-0.2s.png");
