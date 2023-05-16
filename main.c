@@ -87,14 +87,14 @@ int main(int argc, char *argv[])
             initialiser_imageBOUTON(&IMGOptFourAlt, (SCREEN_W / 2) + offset, -130, 224, 508, "oQuitAlt.png");
             const char *level1[] = {"imgs/level1_1.png", "imgs/level1_2.png", "imgs/level1_3.png", "imgs/level1_4.png", "imgs/level1_5.png", "imgs/level1_6.png", "imgs/level1_7.png", "imgs/level1_8.png", "imgs/level1_9.png", "imgs/level1_10.png"};
             const char *level1mask[] = {"imgs/level 1Mask.png"};
-            const char *level2[] = {"imgs/level2_1.png"};
+            const char *level2[] = {"imgs/level2_1.png", "imgs/level2_2.png", "imgs/level2_3.png", "imgs/level2_4.png", "imgs/level2_5.png", "imgs/level2_6.png", "imgs/level2_7.png", "imgs/level2_8.png", "imgs/level2_9.png", "imgs/level2_10.png"};
             const char *level2mask[] = {"imgs/level 2Mask.png"};
             const char *gameoverpic[] = {"imgs/gameover.png"};
             const char *choicepic[] = {"imgs/controls.png"};
             initBack(&gameoverimg, screen_surface, gameoverpic, 1);
             initBack(&b[0], screen_surface, level1, 10);
             initBack(&mask[0], screen_surface, level1mask, 1);
-            initBack(&b[1], screen_surface, level2, 1);
+            initBack(&b[1], screen_surface, level2, 10);
             initBack(&mask[1], screen_surface, level2mask, 1);
             initBack(&choice, screen_surface, choicepic, 1);
             init_players(&player, &playerTwo);
