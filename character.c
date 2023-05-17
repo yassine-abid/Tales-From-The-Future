@@ -90,7 +90,7 @@ void init_right(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -120,7 +120,7 @@ void init_left(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -150,7 +150,7 @@ void init_rright(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -180,7 +180,7 @@ void init_rleft(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -210,7 +210,7 @@ void init_jleft(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -240,7 +240,7 @@ void init_fleft(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -270,7 +270,7 @@ void init_jright(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -300,7 +300,7 @@ void init_fright(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -330,7 +330,7 @@ void init_aright(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -360,7 +360,7 @@ void init_aleft(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -391,7 +391,7 @@ void init_lidle(Player *player, const char *path[])
             fprintf(stderr, "Error: Unable to load sprite image. %s\n", SDL_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
@@ -442,7 +442,7 @@ void init_player(Player *player, int x, int y, int velocity, int maximumvelocity
             fprintf(stderr, "Error: Unable to load player sprite. %s\n", IMG_GetError());
             exit(1);
         }
-        player->sprite[i] = SDL_DisplayFormat(temp_surface);
+        player->sprite[i] = SDL_DisplayFormatAlpha(temp_surface);
         SDL_FreeSurface(temp_surface);
         if (player->sprite[i] == NULL)
         {
