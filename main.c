@@ -156,6 +156,7 @@ int main(int argc, char *argv[])
             // initializes arduino if ctrlchoice is 2
             if (ctrlChoice == 2)
             {
+                printf("Arduino is initializing...\n");
                 setup_arduino(&serial_port);
             }
             while (game >= 1)
@@ -264,9 +265,15 @@ int main(int argc, char *argv[])
                     {
                         while (SDL_GetTicks() - arduinotime < 20)
                             getInputs(inputs, serial_port);
-                        for (i = 0; i<8; i++) {
-                            printf("%d\n", inputs[i]);
+                        arduinotime = SDL_GetTicks();
+
+                        for (i = 0; i < 8; i++)
+                        {
+                            printf("%d", inputs[i]);
                         }
+                        printf("\n");
+                        playermoving = joystickMovement(inputs, &player, &njump);
+                        printf("Njump outside %d\n", njump);
                     }
 
                     handleScrolling(playermoving, level, &player, b); // Handles scrolling

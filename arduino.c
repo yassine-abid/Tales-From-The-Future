@@ -94,13 +94,10 @@ void getInputs(int x[], int serial_port)
         if (val & (0x01 << i))
         {
             x[i] = 1;
-            printf("1");
         }
         else
         {
             x[i] = 0;
-            printf("0");
         }
-    printf("\n");
     free(line);
 }
