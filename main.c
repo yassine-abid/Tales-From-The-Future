@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
         Minimap m;
         int initialy, initialx;
         // Initialize SDL
-        int level = 0;
+        int level = 1;
         int updatedLevelZero = 0;
         int updatedLevelOne = 0;
         int updatedLevelTwo = 0;
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
             initBack(&gameoverimg, screen_surface, gameoverpic, 1);
             initBack(&b[0], screen_surface, level1, 10);
             initBack(&mask[0], screen_surface, level1mask, 1);
-            initBack(&b[1], screen_surface, level2, 10);
+            initBack(&b[1], screen_surface, level2, 1);
             initBack(&mask[1], screen_surface, level2mask, 1);
             initBack(&choice, screen_surface, choicepic, 1);
             init_players(&player, &playerTwo);
@@ -390,11 +390,12 @@ int main(int argc, char *argv[])
                         e.health -= 1;
                     // printf("%d %d entity direction direction : %d\n", actualPlayer.x, e.rect.x, e.direction);
                     // printf("%d\n", e.health);
-                    if (e.health > 0)
+                    if (e.health > 0 && level == 0)
                         print_entity(&e, screen_surface, e.direction, b[level].camera_pos);
 
                     animate_trap(&t1, SDL_GetTicks());
                     move_trap(&t1, 1000, 1200);
+                    if (level == 0)
                     print_trap(t1, screen_surface, b[level].camera_pos);
 
                     draw_hearts(screen_surface, player.health);
