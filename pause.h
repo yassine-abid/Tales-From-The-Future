@@ -38,5 +38,6 @@ void display_button_images(SDL_Surface** screen_surface,
 void pauseGame(Player p, Background b, SDL_Surface* screen_sruface, int *isPaused, SDL_Event *event, int *game, image IMGOptOne, image IMGOptTwo, image IMGOptThree, image IMGOptFour, 
                 image IMGOptOneAlt, image IMGOptTwoAlt, image IMGOptThreeAlt, image IMGOptFourAlt ,int mouseX, int mouseY,
                 int *pressedOne, int *pressedTwo, int *pressedThree, int *pressedFour, pauseBackground pause,int *level);
+void isGameOver(int* gameover, int* game, Background gameoverimg, SDL_Surface* screen_surface);
 
 #endif

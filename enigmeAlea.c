@@ -277,3 +277,32 @@ void afficher_imageBMPEnigme(SDL_Surface *screen, imageEnig imge)
 {
     SDL_BlitSurface(imge.img, &imge.pos_img_affiche, screen, &imge.pos_img_ecran);
 }
+
+void cntrlChoice(int* ctrlChoice, SDL_Surface* screen_surface, Background choice) {
+    int choosing = 1;
+    SDL_Event event;
+
+    while (choosing) {
+        afficherBack(choice, screen_surface);
+        SDL_Flip(screen_surface);
+        SDL_WaitEvent(&event);
+        
+        switch (event.type) {
+            case SDL_QUIT:
+                choosing = 0;
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym) {
+                    case SDLK_k:
+                        *ctrlChoice = 1;
+                        choosing = 0;
+                        break;
+                    case SDLK_j:
+                        *ctrlChoice = 2;
+                        choosing = 0;
+                        break;
+                }
+                break;
+        }
+    }
+}

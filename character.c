@@ -44,7 +44,7 @@ void init_players(Player *player, Player *playerTwo)
                                 "sprites/jr9.png"};
     const char *attackleft[4] = {"sprites/al1.png", "sprites/al2.png", "sprites/al3.png", "sprites/al4.png"};
     const char *attackright[4] = {"sprites/ar1.png", "sprites/ar2.png", "sprites/ar3.png", "sprites/ar4.png"};
-    init_player(player, 100, 350, 1, 10, 3, 3, idle);
+    init_player(player, 100, 350, 1, 10, 50, 50, idle);
     init_lidle(player, idleleft);
     init_right(player, right);
     init_left(player, left);
@@ -374,9 +374,9 @@ void init_aleft(Player *player, const char *path[])
 
 /**
  * @brief Initializes left idle movement sprites
- * 
- * @param player 
- * @param path 
+ *
+ * @param player
+ * @param path
  * @return Nothing
  */
 void init_lidle(Player *player, const char *path[])
@@ -512,7 +512,7 @@ void update_player_animation(Player *player, Uint32 current_time, int player_mov
             current_frame = ((current_frame - 8 + 1) % 4 + 58);
             player->last_frame_time[player_moving] = current_time;
             break;
-        case 10: 
+        case 10:
             current_frame = ((current_frame - 8 + 1) % 4 + 62);
             player->last_frame_time[player_moving] = current_time;
             break;
@@ -649,7 +649,8 @@ int playerOneMovement(SDL_Event *event, Player *player, int *njump, int *nplayer
             {
                 player->direction = 9;
             }
-            if (player->direction == 11) {
+            if (player->direction == 11)
+            {
                 player->direction = 10;
             }
             break;
@@ -677,15 +678,195 @@ int playerOneMovement(SDL_Event *event, Player *player, int *njump, int *nplayer
             player->direction = 8;
             break;
         case SDLK_SPACE:
-            if (player->direction == 9) {
-            player->direction = 0;
+            if (player->direction == 9)
+            {
+                player->direction = 0;
             }
-            if (player->direction == 10) {
+            if (player->direction == 10)
+            {
                 player->direction = 11;
             }
             break;
         }
         break;
+    }
+
+    return playermoving;
+}
+
+int joystickMovement(int *inputs, Player *player, int *njump)
+{
+    int playermoving = 0;
+    printf("player direction: %d\n", player->direction);
+    int UP = inputs[0];
+    int DOWN = inputs[1];
+    int LEFT = inputs[3];
+    int RIGHT = inputs[2];
+    int X = inputs[4];
+    int Y = inputs[6];
+    int A = inputs[5];
+    int B = inputs[7];
+    int somethingPressed;
+    int nothingPressed = 0;
+    int nthCounter = 0;
+    int isUpNotPressed = 1;
+    for (int i = 0; i < 8; i++)
+    {
+        if (inputs[i] == 0)
+        {
+            nthCounter++;
+        }
+    }
+    if (nthCounter == 8)
+    {
+        nothingPressed = 1;
+    }
+    if (RIGHT == 1)
+    {
+        if (player->direction != 7)
+        {
+            // Move right
+            player->velocity += 1;
+            if (player->velocity > player->maximumvelocity)
+            {
+                player->velocity = player->maximumvelocity;
+            }
+            player->direction = 1;
+        }
+        if (B == 1)
+        {
+            // Move right
+            player->velocity += 3;
+            if (player->velocity > player->maximumvelocity)
+            {
+                player->velocity = player->maximumvelocity;
+            }
+            player->direction = 3;
+        }
+        if (UP == 1)
+        {
+            *njump = 0;
+            player->direction = 7;
+        }
+        playermoving = 1;
+    }
+    if (LEFT == 1)
+    {
+        // Move left
+        if (player->direction != 5)
+        {
+            player->velocity += 1;
+            if (player->velocity < -player->maximumvelocity)
+            {
+                player->velocity = -player->maximumvelocity;
+            }
+            player->direction = 2;
+        }
+        if (UP == 1)
+        {
+            player->direction = 5;
+        }
+        if (B == 1)
+        {
+            // Move right
+            player->velocity += 3;
+            if (player->velocity > player->maximumvelocity)
+            {
+                player->velocity = player->maximumvelocity;
+            }
+            player->direction = 4;
+        }
+        playermoving = 2;
+    }
+    if (UP == 1)
+    {
+        if (player->direction != 7)
+        {
+            *njump = 1;
+            player->velocity += 1;
+            if (player->velocity < -player->maximumvelocity)
+            {
+                player->velocity = -player->maximumvelocity;
+            }
+            player->direction = 7;
+        }
+        if (RIGHT == 1)
+        {
+            player->direction = 7;
+            *njump = 0;
+            playermoving = 1;
+        }
+        if (LEFT == 1)
+        {
+            player->direction = 5;
+            playermoving = 2;
+        }
+    }
+    if (Y == 1)
+    {
+        if (player->direction == 0)
+        {
+            player->direction = 9;
+        }
+        if (player->direction == 11)
+        {
+            player->direction = 10;
+        }
+    }
+    int lastDirection = player->direction; // Variable to store the last known direction
+    printf("last direction: %d\n", lastDirection);
+
+
+
+    if (nothingPressed)
+    {
+        if (LEFT == 0)
+        {
+            if ((lastDirection == 2) || (lastDirection == 4))
+            {
+                player->direction = 11;
+                player->velocity = 1;
+                lastDirection = player->direction; // Update the last known direction
+            }
+        }
+        if (RIGHT == 0)
+        {
+            if ((lastDirection == 1) || (lastDirection == 3))
+            {
+                printf("Uhh\n");
+                player->direction = 0;
+                player->velocity = 1;
+                lastDirection = player->direction; // Update the last known direction
+            }
+        }
+        if (UP == 0)
+        {
+            if ((lastDirection == 7) || (lastDirection == 5))
+            {
+                player->velocity = 1;
+                player->direction = 8;
+                lastDirection = player->direction; // Update the last known direction
+            }
+        }
+        if (Y == 0)
+        {
+            if (lastDirection == 9)
+            {
+                player->direction = 0;
+            }
+            else if (lastDirection == 10)
+            {
+                player->direction = 11;
+            }
+            else
+            {
+                player->direction = lastDirection; // Restore the last known direction
+            }
+        }
+    }
+    else
+    {
+        player->direction = lastDirection; // Restore the last known direction
     }
 
     return playermoving;
@@ -835,7 +1016,7 @@ void updatePlayerPosition(SDL_Rect *playerRect, int *direction, int velocity, in
 {
     if (playerRect->x < 50)
     {
-        playerRect->y = 50;
+        playerRect->x = 50;
     }
     switch (*direction)
     {
@@ -911,7 +1092,6 @@ void updatePlayerPosition(SDL_Rect *playerRect, int *direction, int velocity, in
         }
         break;
     case 8:
-
         playerRect->y += velocity + 1;
         if (playerRect->y > *initialy)
         {

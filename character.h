@@ -69,5 +69,6 @@ void checkIfPlayerIsDead(Player *player, int* gameover, int* level, int* upZero,
 void initialiser_imageBOUTON(image *imge, int x, int y, int h, int w, char *name);
 void afficher_imageBTN(SDL_Surface *screen,image imge);
 int aleaMain();
+int joystickMovement(int* inputs, Player* player, int* njump);
 
 #endif
