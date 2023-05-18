@@ -53,10 +53,12 @@ int main(int argc, char *argv[])
         Minimap m;
         int initialy, initialx;
         // Initialize SDL
-        int level = 0;
+        int level = 2;
         int updatedLevelZero = 0;
         int updatedLevelOne = 0;
         int updatedLevelTwo = 0;
+        int updatedLevelThree = 0;
+        int updatedLevelFour = 0;
         SDL_Color levelMaskColors[] = {{0, 255, 0}, {0, 0, 0}, {0, 0, 0}, {0, 255, 0}, {0, 255, 0}};
 
         // Create a window
@@ -100,8 +102,8 @@ int main(int argc, char *argv[])
             const char *level3mask[] = {"imgs/level 3Mask.png"};
             const char *level4[] = {"imgs/level4_1.png", "imgs/level4_2.png", "imgs/level4_3.png", "imgs/level4_4.png"};
             const char *level4mask[] = {"imgs/level 4Mask.png"};
-            const char *levelOneDialogue[] = {"dialogue/d1.png", "dialogue/d2.png", "dialogue/d3.png", "dialogue/d4.png", "dialogue/d5.png", "dialogue/d6.png"
-                                            , "dialogue/d7.png"};
+            const char *level22mask[] = {"imgs/level 22Mask.png"};
+            const char *levelOneDialogue[] = {"dialogue/d1.png", "dialogue/d2.png", "dialogue/d3.png", "dialogue/d4.png", "dialogue/d5.png", "dialogue/d6.png", "dialogue/d7.png"};
             initBack(&gameoverimg, screen_surface, gameoverpic, 1);
             initBack(&b[0], screen_surface, level1, 10);
             initBack(&mask[0], screen_surface, level1mask, 1);
@@ -111,7 +113,7 @@ int main(int argc, char *argv[])
             initBack(&b[4], screen_surface, level4, 4);
             initBack(&mask[3], screen_surface, level3mask, 1);
             initBack(&mask[1], screen_surface, level2mask, 1);
-            initBack(&mask[2], screen_surface, level1mask, 1);
+            initBack(&mask[2], screen_surface, level22mask, 1);
             initBack(&mask[4], screen_surface, level4mask, 1);
             initBack(&dialogue[0], screen_surface, levelOneDialogue, 6);
             initBack(&choice, screen_surface, choicepic, 1);
@@ -201,10 +203,63 @@ int main(int argc, char *argv[])
                     int ch = Mix_PlayChannel(-1, mus, 0);
                     SDL_Delay(10000);
                     level = 1;
+                    actualPlayer.x = 0;
                 }
+                if (actualPlayer.x >= 10800 && level == 1)
+                {
+                    afficherBack(levelPassed, screen_surface);
+                    SDL_Flip(screen_surface);
+                    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+                    mus = Mix_LoadWAV("game_sound/missionPassed.wav");
+                    int ch = Mix_PlayChannel(-1, mus, 0);
+                    SDL_Delay(10000);
+                    level = 2;
+                    actualPlayer.x = 0;
+                }
+                if (actualPlayer.x >= 12500 && level == 2)
+                {
+                    afficherBack(levelPassed, screen_surface);
+                    SDL_Flip(screen_surface);
+                    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+                    mus = Mix_LoadWAV("game_sound/missionPassed.wav");
+                    int ch = Mix_PlayChannel(-1, mus, 0);
+                    SDL_Delay(10000);
+                    level = 3;
+                    actualPlayer.x = 0;
+                }
+                if (actualPlayer.x >= 14700 && level == 3)
+                {
+                    afficherBack(levelPassed, screen_surface);
+                    SDL_Flip(screen_surface);
+                    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+                    mus = Mix_LoadWAV("game_sound/missionPassed.wav");
+                    int ch = Mix_PlayChannel(-1, mus, 0);
+                    SDL_Delay(10000);
+                    level = 4;  
+                    actualPlayer.x = 0;
+                }
+
                 // getInputs(inputs,serial_port);
                 Mix_CloseAudio();
                 // arduino();
+
+                if ((b[level].camera_pos.x + 1366 > 3920) && actualPlayer.x < 3920 && level == 0)
+                {
+                    b[level].camera_pos.x = 3920 - 1366;
+                    stopScrolling = 1;
+                }
+                if ((b[level].camera_pos.x + 1366 > 3920) && actualPlayer.x > 3920 && level == 0)
+                    stopScrolling = 0;
+                if (stopScrolling && (player.rect.x >= 800))
+                {
+                    stopScrolling = 0;
+                    b[level].camera_pos.x += 1366;
+                    player.rect.x = 100;
+                }
+                if (level == 0 && actualPlayer.x >= 3920)
+                    if (b[level].camera_pos.x < 3920)
+                        b[level].camera_pos.x = 3920;
+
                 switch (level)
                 {
                 case 0:
@@ -216,6 +271,7 @@ int main(int argc, char *argv[])
                         updatedLevelZero = 1;
                     }
                     break;
+
                 case 1:
                     if (updatedLevelOne == 0)
                     {
@@ -230,12 +286,42 @@ int main(int argc, char *argv[])
                     afficherBack(b[level], screen_surface);
                     break;
                 case 2:
+                    if (updatedLevelTwo == 0)
+                    {
+                        player.rect.y = 290;
+                        actualPlayer.y = 290;
+                        player.rect.x = 50;
+                        actualPlayer.x = 50;
+                        initialy = player.rect.y;
+                        initialx = player.rect.x;
+                        updatedLevelTwo = 1;
+                    }
                     afficherBack(b[level], screen_surface);
                     break;
                 case 3:
+                    if (updatedLevelThree == 0)
+                    {
+                        player.rect.y = 290;
+                        actualPlayer.y = 290;
+                        player.rect.x = 50;
+                        actualPlayer.x = 50;
+                        initialy = player.rect.y;
+                        initialx = player.rect.x;
+                        updatedLevelThree = 1;
+                    }
                     afficherBack(b[level], screen_surface);
                     break;
                 case 4:
+                    if (updatedLevelFour == 0)
+                    {
+                        player.rect.y = 290;
+                        actualPlayer.y = 290;
+                        player.rect.x = 50;
+                        actualPlayer.x = 50;
+                        initialy = player.rect.y;
+                        initialx = player.rect.x;
+                        updatedLevelFour = 1;
+                    }
                     afficherBack(b[level], screen_surface);
                     break;
                 }
@@ -243,7 +329,8 @@ int main(int argc, char *argv[])
                 {
                     levelDlg(screen_surface, dialogue, &dialogueCheck[dialogueIndex], &dialogueframe, 3);
                 }
-                if ((level == 0) && (dialogueCheck[1] == 0) && (actualPlayer.x >= 860)) {
+                if ((level == 0) && (dialogueCheck[1] == 0) && (actualPlayer.x >= 860))
+                {
                     levelDlg(screen_surface, dialogue, &dialogueCheck[dialogueIndex], &dialogueframe, 5);
                 }
                 if (dialogueCheck[dialogueIndex] == 1)
@@ -315,8 +402,8 @@ int main(int argc, char *argv[])
                         playermoving = joystickMovement(inputs, &player, &njump);
                         printf("Njump outside %d\n", njump);
                     }
-
-                    handleScrolling(playermoving, level, &player, b); // Handles scrolling
+                    if (!stopScrolling)
+                        handleScrolling(playermoving, level, &player, b, stopScrolling); // Handles scrolling
                     if (player.rect.x > 980 - 50 && stopScrolling == 0)
                         player.rect.x = 980 - 50;
                     if (player.rect.x < 50)

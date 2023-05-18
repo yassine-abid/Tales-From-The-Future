@@ -256,7 +256,7 @@ Uint32 get_elapsed_time(Uint32 start_time)
     return elapsed_time;
 }
 
-void handleScrolling(int playermoving, int level, Player *player, Background *b)
+void handleScrolling(int playermoving, int level, Player *player, Background *b,int stopScrolling)
 {
     switch (playermoving)
     {

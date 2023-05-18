@@ -46,5 +46,5 @@ void animerBack(Background *b,int framenumber);
 void draw_hearts(SDL_Surface *surface, int lives);
 void playMultiplayer(Background* b1, Background* b2,SDL_Surface* screen , const char** paths);
 void playSinglePlayer(SDL_Surface *screen, Background *b, const char **paths) ;
-void handleScrolling(int playermoving, int level, Player* player, Background* b);
+void handleScrolling(int playermoving, int level, Player* player, Background* b,int stopScrolling);
 #endif
