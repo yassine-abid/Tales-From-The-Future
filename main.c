@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
         Minimap m;
         int initialy, initialx;
         // Initialize SDL
-        int level = 1;
+        int level = 0;
         int updatedLevelZero = 0;
         int updatedLevelOne = 0;
         int updatedLevelTwo = 0;
@@ -87,7 +87,8 @@ int main(int argc, char *argv[])
             initialiser_imageBOUTON(&IMGOptFourAlt, (SCREEN_W / 2) + offset, -130, 224, 508, "oQuitAlt.png");
             const char *level1[] = {"imgs/level1_1.png", "imgs/level1_2.png", "imgs/level1_3.png", "imgs/level1_4.png", "imgs/level1_5.png", "imgs/level1_6.png", "imgs/level1_7.png", "imgs/level1_8.png", "imgs/level1_9.png", "imgs/level1_10.png"};
             const char *level1mask[] = {"imgs/level 1Mask.png"};
-            const char *level2[] = {"imgs/level2_1.png", "imgs/level2_2.png", "imgs/level2_3.png", "imgs/level2_4.png", "imgs/level2_5.png", "imgs/level2_6.png", "imgs/level2_7.png", "imgs/level2_8.png", "imgs/level2_9.png", "imgs/level2_10.png"};
+            const char *level2[] = {"imgs/level2_1.png"};
+            const char *level2partTwo[] = {"imgs/level2_2.png"};
             const char *level2mask[] = {"imgs/level 2Mask.png"};
             const char *gameoverpic[] = {"imgs/gameover.png"};
             const char *choicepic[] = {"imgs/controls.png"};
@@ -95,6 +96,7 @@ int main(int argc, char *argv[])
             initBack(&b[0], screen_surface, level1, 10);
             initBack(&mask[0], screen_surface, level1mask, 1);
             initBack(&b[1], screen_surface, level2, 1);
+            initBack(&b[2], screen_surface, level2partTwo, 1);
             initBack(&mask[1], screen_surface, level2mask, 1);
             initBack(&choice, screen_surface, choicepic, 1);
             init_players(&player, &playerTwo);
@@ -144,7 +146,7 @@ int main(int argc, char *argv[])
             coin c[20];
             int i;
             for (i = 0; i < 20; i++)
-                init_coin("imgs/coin.png", 400 + (i * 100), 610, 20, 20, 9, &c[i]);
+                init_coin("imgs/coin.png", 400 + (i * 500), 570, 20, 20, 9, &c[i]);
             char score[100];
             if (game == 2)
                 charger(&player, &b[level], "save.txt", &level);
@@ -176,7 +178,6 @@ int main(int argc, char *argv[])
                     afficherBack(levelPassed, screen_surface);
                     SDL_Flip(screen_surface);
                     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-                    char link[50];
                     mus = Mix_LoadWAV("game_sound/missionPassed.wav");
                     int ch = Mix_PlayChannel(-1, mus, 0);
                     SDL_Delay(10000);
@@ -355,6 +356,9 @@ int main(int argc, char *argv[])
                             {
                                 c[i].collected = 1;
                                 player.score += 10;
+                                Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+                                mus = Mix_LoadWAV("game_sound/coin.wav");
+                                int ch = Mix_PlayChannel(-1, mus, 0);
                             }
                             if (c[i].collected == 0)
                             {
@@ -396,7 +400,7 @@ int main(int argc, char *argv[])
                     animate_trap(&t1, SDL_GetTicks());
                     move_trap(&t1, 1000, 1200);
                     if (level == 0)
-                    print_trap(t1, screen_surface, b[level].camera_pos);
+                        print_trap(t1, screen_surface, b[level].camera_pos);
 
                     draw_hearts(screen_surface, player.health);
                     Uint32 elapsedGameTime = SDL_GetTicks() - start_time;
