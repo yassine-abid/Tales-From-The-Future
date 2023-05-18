@@ -52,11 +52,11 @@ int main(int argc, char *argv[])
         Minimap m;
         int initialy, initialx;
         // Initialize SDL
-        int level = 0;
+        int level = 3;
         int updatedLevelZero = 0;
         int updatedLevelOne = 0;
         int updatedLevelTwo = 0;
-        SDL_Color levelMaskColors[3] = {{0, 255, 0}, {0, 0, 0}, {0, 0, 0}};
+        SDL_Color levelMaskColors[] = {{0, 255, 0}, {0, 0, 0}, {0, 0, 0},{0,255,0},{0,255,0}};
 
         // Create a window
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         {
             SDL_Rect level1traps[] = {{1618, 636, 100, 10}, {2060, 636, 100, 10}, {2544, 636, 100, 20}, {7750, 636, 100, 10}, {8140, 636, 100, 10}, {9092, 636, 200, 10}, {11270, 636, 200, 10}};
             pauseBackground pause[6];
-            Background b[3], mask[3], gameoverimg;
+            Background b[10], mask[10], gameoverimg;
             Background choice;
             int ctrlChoice;
             int choosing = 1;
@@ -92,12 +92,21 @@ int main(int argc, char *argv[])
             const char *level2mask[] = {"imgs/level 2Mask.png"};
             const char *gameoverpic[] = {"imgs/gameover.png"};
             const char *choicepic[] = {"imgs/controls.png"};
+            const char *level3[] = {"imgs/level3_1.png", "imgs/level3_2.png", "imgs/level3_3.png", "imgs/level3_4.png"};
+            const char *level3mask[] = {"imgs/level 3Mask.png"};
+            const char *level4[] = {"imgs/level4_1.png", "imgs/level4_2.png", "imgs/level4_3.png", "imgs/level4_4.png"};
+            const char *level4mask[] = {"imgs/level 4Mask.png"};
             initBack(&gameoverimg, screen_surface, gameoverpic, 1);
             initBack(&b[0], screen_surface, level1, 10);
             initBack(&mask[0], screen_surface, level1mask, 1);
             initBack(&b[1], screen_surface, level2, 1);
             initBack(&b[2], screen_surface, level2partTwo, 1);
+            initBack(&b[3], screen_surface, level3, 4);
+            initBack(&b[4], screen_surface, level4, 4);
+            initBack(&mask[3], screen_surface, level3mask, 1);
             initBack(&mask[1], screen_surface, level2mask, 1);
+            initBack(&mask[2], screen_surface, level1mask, 1);
+            initBack(&mask[4], screen_surface, level4mask, 1);
             initBack(&choice, screen_surface, choicepic, 1);
             init_players(&player, &playerTwo);
             init_e(&e, level);
@@ -153,7 +162,7 @@ int main(int argc, char *argv[])
             int showmp = 1;
             Uint32 animation_time = 0, start_time = SDL_GetTicks();
             int elapsed = 0;
-            int levlsframeNumber[] = {9, 1};
+            int levlsframeNumber[] = {9,1,1,4,4};
             cntrlChoice(&ctrlChoice, screen_surface, choice);
             // initializes arduino if ctrlchoice is 2
             if (ctrlChoice == 2)
@@ -161,6 +170,8 @@ int main(int argc, char *argv[])
                 printf("Arduino is initializing...\n");
                 setup_arduino(&serial_port);
             }
+            int stopScrolling = 0;
+            int levelBounds[]={15000,12878};
             while (game >= 1)
             {
                 elapsed = SDL_GetTicks() - animation_time;
@@ -208,6 +219,15 @@ int main(int argc, char *argv[])
                         initialx = player.rect.x;
                         updatedLevelOne = 1;
                     }
+                    afficherBack(b[level], screen_surface);
+                    break;
+                case 2:
+                    afficherBack(b[level], screen_surface);
+                    break;
+                case 3:
+                    afficherBack(b[level], screen_surface);
+                    break;
+                case 4:
                     afficherBack(b[level], screen_surface);
                     break;
                 }
@@ -278,8 +298,7 @@ int main(int argc, char *argv[])
                     }
 
                     handleScrolling(playermoving, level, &player, b); // Handles scrolling
-
-                    if (player.rect.x > 980 - 50)
+                    if (player.rect.x > 980 - 50 && stopScrolling == 0)
                         player.rect.x = 980 - 50;
                     if (player.rect.x < 50)
                     {
