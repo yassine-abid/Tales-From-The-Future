@@ -19,6 +19,7 @@
 #include "pause.h"
 #include "sauv.h"
 #include "arduino.h"
+#include "dialogue.h"
 #include <time.h>
 #include "menufunctions.h"
 #include "pong.h"
@@ -52,11 +53,11 @@ int main(int argc, char *argv[])
         Minimap m;
         int initialy, initialx;
         // Initialize SDL
-        int level = 3;
+        int level = 0;
         int updatedLevelZero = 0;
         int updatedLevelOne = 0;
         int updatedLevelTwo = 0;
-        SDL_Color levelMaskColors[] = {{0, 255, 0}, {0, 0, 0}, {0, 0, 0},{0,255,0},{0,255,0}};
+        SDL_Color levelMaskColors[] = {{0, 255, 0}, {0, 0, 0}, {0, 0, 0}, {0, 255, 0}, {0, 255, 0}};
 
         // Create a window
 
@@ -66,6 +67,8 @@ int main(int argc, char *argv[])
             SDL_Rect level1traps[] = {{1618, 636, 100, 10}, {2060, 636, 100, 10}, {2544, 636, 100, 20}, {7750, 636, 100, 10}, {8140, 636, 100, 10}, {9092, 636, 200, 10}, {11270, 636, 200, 10}};
             pauseBackground pause[6];
             Background b[10], mask[10], gameoverimg;
+            Background dialogue[10];
+            int dialogueOnecheck = 0;
             Background choice;
             int ctrlChoice;
             int choosing = 1;
@@ -96,6 +99,7 @@ int main(int argc, char *argv[])
             const char *level3mask[] = {"imgs/level 3Mask.png"};
             const char *level4[] = {"imgs/level4_1.png", "imgs/level4_2.png", "imgs/level4_3.png", "imgs/level4_4.png"};
             const char *level4mask[] = {"imgs/level 4Mask.png"};
+            const char *levelOneDialogue[] = {"dialogue/d1.png", "dialogue/d2.png", "dialogue/d3.png", "dialogue/d4.png", "dialogue/d5.png"};
             initBack(&gameoverimg, screen_surface, gameoverpic, 1);
             initBack(&b[0], screen_surface, level1, 10);
             initBack(&mask[0], screen_surface, level1mask, 1);
@@ -107,6 +111,7 @@ int main(int argc, char *argv[])
             initBack(&mask[1], screen_surface, level2mask, 1);
             initBack(&mask[2], screen_surface, level1mask, 1);
             initBack(&mask[4], screen_surface, level4mask, 1);
+            initBack(&dialogue[0], screen_surface, levelOneDialogue, 4);
             initBack(&choice, screen_surface, choicepic, 1);
             init_players(&player, &playerTwo);
             init_e(&e, level);
@@ -118,6 +123,7 @@ int main(int argc, char *argv[])
             initialy = player.rect.y;
             SDL_Rect playerCollionCheck;
             int njump = 1;
+            int dialogueframe = 0;
             int njumptwo = 1;
             int nplayer = 0;
             int playermoving;
@@ -138,8 +144,7 @@ int main(int argc, char *argv[])
             // b.images[0]= IMG_Load("imgs/level 1.png");
             Background levelPassed, damage;
             /*Dialogue will be transferred into a seperate function eventually*/
-            int dialogueCheck = 0;
-            Background dialogue[10];
+            int dialogueOneCheck = 0;
             // const char *dialogueOne[] = {"dialogue/dialogueOne.png"};
             // initBack(&dialogue[0], screen_surface, dialogueOne, 1);
             /*End of dialogue*/
@@ -162,7 +167,7 @@ int main(int argc, char *argv[])
             int showmp = 1;
             Uint32 animation_time = 0, start_time = SDL_GetTicks();
             int elapsed = 0;
-            int levlsframeNumber[] = {9,1,1,4,4};
+            int levlsframeNumber[] = {9, 1, 1, 4, 4};
             cntrlChoice(&ctrlChoice, screen_surface, choice);
             // initializes arduino if ctrlchoice is 2
             if (ctrlChoice == 2)
@@ -171,9 +176,10 @@ int main(int argc, char *argv[])
                 setup_arduino(&serial_port);
             }
             int stopScrolling = 0;
-            int levelBounds[]={15000,12878};
+            int levelBounds[] = {15000, 12878};
             while (game >= 1)
             {
+
                 elapsed = SDL_GetTicks() - animation_time;
                 if (elapsed >= 100)
                 {
@@ -206,6 +212,10 @@ int main(int argc, char *argv[])
                         initialy = player.rect.y;
                         initialx = player.rect.x;
                         updatedLevelZero = 1;
+                        if ((level == 0) && (dialogueOneCheck == 0))
+                        {
+                            levelOneDlg(screen_surface, dialogue, &dialogueOneCheck, &dialogueframe,3);
+                        }
                     }
                     break;
                 case 1:
