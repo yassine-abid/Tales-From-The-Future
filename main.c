@@ -68,7 +68,8 @@ int main(int argc, char *argv[])
             pauseBackground pause[6];
             Background b[10], mask[10], gameoverimg;
             Background dialogue[10];
-            int dialogueOnecheck = 0;
+            int dialogueCheck[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            int dialogueIndex = 0;
             Background choice;
             int ctrlChoice;
             int choosing = 1;
@@ -99,7 +100,8 @@ int main(int argc, char *argv[])
             const char *level3mask[] = {"imgs/level 3Mask.png"};
             const char *level4[] = {"imgs/level4_1.png", "imgs/level4_2.png", "imgs/level4_3.png", "imgs/level4_4.png"};
             const char *level4mask[] = {"imgs/level 4Mask.png"};
-            const char *levelOneDialogue[] = {"dialogue/d1.png", "dialogue/d2.png", "dialogue/d3.png", "dialogue/d4.png", "dialogue/d5.png"};
+            const char *levelOneDialogue[] = {"dialogue/d1.png", "dialogue/d2.png", "dialogue/d3.png", "dialogue/d4.png", "dialogue/d5.png", "dialogue/d6.png"
+                                            , "dialogue/d7.png"};
             initBack(&gameoverimg, screen_surface, gameoverpic, 1);
             initBack(&b[0], screen_surface, level1, 10);
             initBack(&mask[0], screen_surface, level1mask, 1);
@@ -111,7 +113,7 @@ int main(int argc, char *argv[])
             initBack(&mask[1], screen_surface, level2mask, 1);
             initBack(&mask[2], screen_surface, level1mask, 1);
             initBack(&mask[4], screen_surface, level4mask, 1);
-            initBack(&dialogue[0], screen_surface, levelOneDialogue, 4);
+            initBack(&dialogue[0], screen_surface, levelOneDialogue, 6);
             initBack(&choice, screen_surface, choicepic, 1);
             init_players(&player, &playerTwo);
             init_e(&e, level);
@@ -144,7 +146,6 @@ int main(int argc, char *argv[])
             // b.images[0]= IMG_Load("imgs/level 1.png");
             Background levelPassed, damage;
             /*Dialogue will be transferred into a seperate function eventually*/
-            int dialogueOneCheck = 0;
             // const char *dialogueOne[] = {"dialogue/dialogueOne.png"};
             // initBack(&dialogue[0], screen_surface, dialogueOne, 1);
             /*End of dialogue*/
@@ -179,7 +180,8 @@ int main(int argc, char *argv[])
             int levelBounds[] = {15000, 12878};
             while (game >= 1)
             {
-
+                printf("player x : %d\n", player.rect.x);
+                printf("actual player x : %d\n", actualPlayer.x);
                 elapsed = SDL_GetTicks() - animation_time;
                 if (elapsed >= 100)
                 {
@@ -212,10 +214,6 @@ int main(int argc, char *argv[])
                         initialy = player.rect.y;
                         initialx = player.rect.x;
                         updatedLevelZero = 1;
-                        if ((level == 0) && (dialogueOneCheck == 0))
-                        {
-                            levelOneDlg(screen_surface, dialogue, &dialogueOneCheck, &dialogueframe,3);
-                        }
                     }
                     break;
                 case 1:
@@ -240,6 +238,17 @@ int main(int argc, char *argv[])
                 case 4:
                     afficherBack(b[level], screen_surface);
                     break;
+                }
+                if ((level == 0) && (dialogueCheck[0] == 0))
+                {
+                    levelDlg(screen_surface, dialogue, &dialogueCheck[dialogueIndex], &dialogueframe, 3);
+                }
+                if ((level == 0) && (dialogueCheck[1] == 0) && (actualPlayer.x >= 860)) {
+                    levelDlg(screen_surface, dialogue, &dialogueCheck[dialogueIndex], &dialogueframe, 5);
+                }
+                if (dialogueCheck[dialogueIndex] == 1)
+                {
+                    dialogueIndex++;
                 }
                 // SDL_BlitSurface(b.images[0],NULL,screen_surface,NULL);
                 move_enemy(&e, actualPlayer, 2000, 4000);
@@ -468,6 +477,7 @@ int main(int argc, char *argv[])
 
                     // Update the screen
                     SDL_Flip(screen_surface);
+
                     // Delay to cap the frame rate
                     current_time = SDL_GetTicks();
                     elapsed_time = current_time - last_update_time;

@@ -1,6 +1,6 @@
 #include "dialogue.h"
 
-void levelOneDlg(SDL_Surface *screen, Background *dialogue, int *dialogueCheck, int *i, int maxframe)
+void levelDlg(SDL_Surface *screen, Background *dialogue, int *dialogueCheck, int *i, int maxframe)
 {
     printf("Func entry\n");
     int inDialogue = 1;
@@ -13,7 +13,8 @@ void levelOneDlg(SDL_Surface *screen, Background *dialogue, int *dialogueCheck, 
         SDL_Flip(screen);
         if (*i >= maxframe) // end of dialogue
         {
-            SDL_Delay(5000);
+            SDL_Delay(2500);
+            *i = *(i) + 1;
             *dialogueCheck = 1;
             inDialogue = 0;
         }
@@ -28,9 +29,10 @@ void levelOneDlg(SDL_Surface *screen, Background *dialogue, int *dialogueCheck, 
             case SDLK_ESCAPE: // skip dialogue
                 *dialogueCheck = 1;
                 inDialogue = 0;
+                *i = maxframe + 1;
                 break;
             case SDLK_RIGHT:
-                *i = *(i) +1;
+                *i = *(i) + 1;
                 break;
             }
         }

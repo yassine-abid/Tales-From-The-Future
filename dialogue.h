@@ -7,7 +7,7 @@
 #include <string.h>
 #include "bg.h"
 
-void levelOneDlg(SDL_Surface *screen, Background* dialogue, int* dialogueCheck,int *i,int maxframe);
+void levelDlg(SDL_Surface *screen, Background* dialogue, int* dialogueCheck,int *i,int maxframe);
 void afficherDialogue(Background b, SDL_Surface *screen, int i);
 
 #endif
