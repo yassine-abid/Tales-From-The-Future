@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
         Minimap m;
         int initialy, initialx;
         // Initialize SDL
-        int level = 2;
+        int level = 4;
         int updatedLevelZero = 0;
         int updatedLevelOne = 0;
         int updatedLevelTwo = 0;
@@ -118,6 +118,7 @@ int main(int argc, char *argv[])
             initBack(&dialogue[0], screen_surface, levelOneDialogue, 6);
             initBack(&choice, screen_surface, choicepic, 1);
             init_players(&player, &playerTwo);
+
             init_e(&e, level);
             player.rect.w = 120;
             SDL_Event event;
@@ -259,7 +260,8 @@ int main(int argc, char *argv[])
                 if (level == 0 && actualPlayer.x >= 3920)
                     if (b[level].camera_pos.x < 3920)
                         b[level].camera_pos.x = 3920;
-
+                if (level == 4 && b[level].camera_pos.x + 1366 > 1642)
+                    b[level].camera_pos.x = 1642 - 1366;
                 switch (level)
                 {
                 case 0:
@@ -404,7 +406,7 @@ int main(int argc, char *argv[])
                     }
                     if (!stopScrolling)
                         handleScrolling(playermoving, level, &player, b, stopScrolling); // Handles scrolling
-                    if (player.rect.x > 980 - 50 && stopScrolling == 0)
+                    if (player.rect.x > 980 - 50 && stopScrolling == 0 && level != 4)
                         player.rect.x = 980 - 50;
                     if (player.rect.x < 50)
                     {

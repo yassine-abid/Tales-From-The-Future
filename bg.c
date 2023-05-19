@@ -261,7 +261,7 @@ void handleScrolling(int playermoving, int level, Player *player, Background *b,
     switch (playermoving)
     {
     case 0:
-        if (player->rect.x > 100)
+        if (player->rect.x > 100 && level!= 4)
         {
             player->rect.x -= 2;
             scrolling(b + level, RIGHT, 2);
